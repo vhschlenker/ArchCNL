@@ -11,6 +11,7 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.archcnl.archnltoowltranslator.CNL2OWLGeneratorAntlr;
 import org.archcnl.common.datatypes.ArchitectureRule;
 import org.archcnl.common.datatypes.RuleType;
 import org.architecture.cnl.CNL2OWLGenerator;
@@ -19,9 +20,11 @@ public class CNLTranslator {
     private static final Logger LOG = LogManager.getLogger(CNLTranslator.class);
 
     private CNL2OWLGenerator generator;
+    private CNL2OWLGeneratorAntlr newGenerator;
 
     public CNLTranslator() {
         generator = new CNL2OWLGenerator();
+        newGenerator = new CNL2OWLGeneratorAntlr();
     }
 
     public List<ArchitectureRule> translate(List<String> cnlSentences, String outputDirectory) {
@@ -61,6 +64,12 @@ public class CNLTranslator {
             List<ArchitectureRule> rules) {
         LOG.debug("Transforming the rule from CNL to an OWL constraint ...");
         RuleType typeOfParsedRule = generator.transformCNLFile(rulePath, ontologyPath);
+        RuleType typeOfParsedRuleByNewGenerator = newGenerator.transformCNLFile(rulePath, ontologyPath);
+        if(typeOfParsedRule != typeOfParsedRuleByNewGenerator) {
+        	LOG.debug("RuleTypes of old and new generator do not match");
+        	LOG.debug("Old: " + typeOfParsedRule);
+        	LOG.debug("New: " + typeOfParsedRuleByNewGenerator);
+        }
 
         Model ruleModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_MEM, null);
         ruleModel.read(ontologyPath);

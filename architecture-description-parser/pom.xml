@@ -24,6 +24,11 @@
 			<artifactId>org.architecture.cnl</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.archcnl</groupId>
+			<artifactId>archcnl-to-owl-translator</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- Only used by the tests -->
 		<dependency>
 			<groupId>org.apache.jena</groupId>
